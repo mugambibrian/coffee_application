@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %} Coffee {% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'node_modules/@fortawesome/fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" rel="stylesheet" type="text/css" href="{% static 'universal/universal.css' %}">
+    {% block styles %}{% endblock %}
+</head>
+
+<body>
+    <nav class=" navbar navbar-dark bg-dark navbar-expand-sm fixed-top" role="navigation" aria-label="navigation bar">
+        <a href="" class="navbar-brand">Coffee</a>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#homeNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="homeNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="{% url 'farmer:index' %}" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'farmer:factories' %}" class="nav-link">Factories</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">My Products</a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'farmer:product' %}" class="dropdown-item">New</a>
+                        <a href="{% url 'farmer:schedules' %}" class="dropdown-item">Schedules</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Payments Details</a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'farmer:pending_payment' %}" class="dropdown-item">Pending Payments</a>
+                        <a href="{% url 'farmer:payment_history' %}" class="dropdown-item">Payment History</a>
+                    </div>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if not user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'account:register' %}" class="nav-link">Create Account</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'account:login' %}" class="nav-link">Login</a>
+                </li>
+                {% else %}
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Settings</a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'account:profile' %}" class="dropdown-item">Profile</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'account:logout' %}" class="nav-link">Logout</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}}">
+            <p>{{message}}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% block body %}
+    {% endblock %}
+
+    <script src="{% static 'node_modules/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'node_modules/popper.js/dist/popper.min.js' %}"></script>
+    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'node_modules/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

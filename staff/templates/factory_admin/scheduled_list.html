@@ -1,0 +1,44 @@
+{% extends 'staff/layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="table-responsive container mt-4">
+    <table class="table table-striped dt_table">
+        <thead>
+            <tr>
+                <th>ID NO</th>
+                <th>Farmer</th>
+                <th>Scheduled Date</th>
+                <th>Approx Qty(Kg's)</th>
+                <th>Manage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in object_list %}
+            <tr>
+                <td>{{product.farmer.id_number}}</td>
+                <td>{{product.farmer.first_name}} {{product.farmer.last_name}}</td>
+                <td>{{ product.date_scheduled }}</td>
+                <td>{{ product.approximate_quantity }}</td>
+                <td>
+                    <form method="POST" action="{% url 'factory_admin:re_product_reject' %}"
+                        class="form-inline float-left mr-2">
+                        {% csrf_token %}
+                        <input type="hidden" name="product_id" value="{{product.id}}">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                    <a href="{% url 'factory_admin:product_collect' product.id %}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-check"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block scripts %}
+{% include "staff/dataTables.html" %}
+{% endblock %}

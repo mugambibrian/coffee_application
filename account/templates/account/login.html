@@ -1,0 +1,25 @@
+{% extends 'farmer/layout.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'account/custom.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="signForm">
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-outline-primary">Login</button>
+    </form>
+    <div class="text-muted mb-4 mt-3">
+        <a href="{% url 'account:register' %}" class="btn btn-sm btn-outline-primary">
+            <small>
+                <b>Create Account</b>
+            </small>
+        </a>
+        <a href="" class="btn btn-link float-right"><small>Forgot Password</small></a>
+    </div>
+</div>
+{% endblock %}
